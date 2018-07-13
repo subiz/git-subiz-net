@@ -43,6 +43,10 @@ func main() {
 		}
 		// for go get
 		if r.Method == "GET" && r.URL.Query().Get("go-get") == "1" {
+			ps := strings.Split(data.Path, "/")
+			if len(ps) > 1 {
+				data.Path = ps[0]
+			}
 			tmpl.Execute(w, data)
 			return
 		} else if strings.HasSuffix(data.Path, "/info/refs") {
