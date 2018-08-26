@@ -8,12 +8,12 @@ test('remove pre slash', () => {
 
 test('get repo url', () => {
 	expect(index.getRepoUrl("account")).toBe("https://bitbucket.org/subiz/account.git")
-	expect(index.getRepoUrl("idgen")).toBe("https://source.developers.google.com/p/subiz-version-4/r/idgen")
+	expect(index.getRepoUrl("idgen")).toBe("https://gitlab.com/subiz/idgen.git")
 })
 
 test('handle go-get', () => {
 	expect(index.handleGoGet("account")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/account git https:\/\/bitbucket.org\/subiz\/account\.git\">/)
-	expect(index.handleGoGet("idgen")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/idgen git https:\/\/source\.developers\.google\.com\/p\/subiz-version-4\/r\/idgen\">/)
+	expect(index.handleGoGet("idgen")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/idgen git https:\/\/gitlab.com\/subiz\/idgen\.git\">/)
 	expect(index.handleGoGet("payment")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/payment git https:\/\/gitlab.com\/subiz\/payment\.git\">/)
 	expect(index.handleGoGet("goutils/conv")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/goutils git https:\/\/gitlab.com\/subiz\/goutils\.git\">/)
 })

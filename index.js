@@ -1,10 +1,9 @@
 var url = require('url');
 
 let repo_map = {
-	"idgen": name => `https://source.developers.google.com/p/subiz-version-4/r/${name}`,
-	"git-subiz-net": name => `https://source.developers.google.com/p/subiz-version-4/r/${name}`,
 	"account": name => `https://bitbucket.org/subiz/${name}.git`,
 }
+
 module.exports = {
 	removePrefixSlash,
 	getRepoUrl,
@@ -40,13 +39,13 @@ function handleGoGet(name) {
 	return `<!DOCTYPE html>
 <html>
 <head>
-<title>git.subiz.net (0.1.4) ${firstname} ${name} ${path}</title>
+<title>git.subiz.net (0.1.5) ${firstname} ${name} ${path}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="go-import" content="git.subiz.net/${firstname} git ${path}">
-<meta http-equiv="refresh" content="0"; url="https://console.cloud.google.com/code/develop/browse/${firstname}/master?project=subiz-version-4"/>
+<meta http-equiv="refresh" content="0"; url="${path}"/>
 </head>
 <body>
-Nothing to see here; <a href="https://console.cloud.google.com/code/develop/browse/${firstname}/master?project=subiz-version-4">move along</a>.
+Nothing to see here; <a href="${path}">move along</a>.
 </body>
 </html>`
 }
@@ -63,7 +62,7 @@ function git(req, res) {
 
 	if (!path) {
 		res.writeHead(301, {
-			'Location': 'https://console.cloud.google.com/code/develop/repo?project=subiz-version-4'
+			'Location': 'https://gitlab.com/subiz'
 		});
 		res.end()
 		return;
@@ -82,7 +81,7 @@ function git(req, res) {
 		return
 	}
 	res.writeHead(301, {
-		'Location': `https://console.cloud.google.com/code/develop/repo?project=subiz-version-4`
+		'Location': `https://gitlab.com/subiz`
 	})
 	res.end()
 };
