@@ -34,7 +34,8 @@ function getRepoUrl(name) {
 }
 
 function handleGoGet(name) {
-	let firstname = removePrefixSlash(name).split("/")[0]
+	name = removePrefixSlash(name)
+	let firstname = name.split("/")[0]
 	let path = getRepoUrl(firstname)
 	return `<!DOCTYPE html>
 <html>
@@ -70,8 +71,6 @@ function git(req, res) {
 	// for go get
 
 	if (req.method == "GET" && query['go-get'] == '1') {
-		var ps = path.split("/")
-		if (ps.length > 2) path = `/${ps[1]}`;
 		let html = handleGoGet(path)
 		res.status(200).send(html)
 		return
