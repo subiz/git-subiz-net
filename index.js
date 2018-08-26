@@ -9,6 +9,8 @@ module.exports = {
 	removePrefixSlash,
 	getRepoUrl,
 	git,
+	handleGoGet,
+	handleGit,
 }
 
 function removePrefixSlash(str) {
@@ -24,10 +26,28 @@ function getRepoUrl(name) {
 	name = removePrefixSlash(name)
 	let path = repo_map[name]
 	if (!path) {
-		return `https://source.developers.google.com/p/subiz-version-4/r/${name}`
+		return `https://gitlab.com/subiz/${name}.git`
 	}
 	return path(name)
 }
+
+function handleGoGet(name) {
+	let path = getRepoUrl(name)
+	return `<!DOCTYPE html>
+<html>
+<head>
+<title>${path}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="go-import" content="git.subiz.net/${name} git ${path}">
+<meta http-equiv="refresh" content="0"; url="https://console.cloud.google.com/code/develop/browse${path}/master?project=subiz-version-4"/>
+</head>
+<body>
+Nothing to see here; <a href="https://console.cloud.google.com/code/develop/browse${path}/master?project=subiz-version-4">move along</a>.
+</body>
+</html>`
+}
+
+function handleGit(name) { return getRepoUrl(name) }
 
 function git(req, res) {
 	let url_parts = url.parse(req.url, true);
@@ -46,22 +66,12 @@ function git(req, res) {
 	if (req.method == "GET" && query['go-get'] == '1') {
 		var ps = path.split("/")
 		if (ps.length > 2) path = `/${ps[1]}`;
-		res.status(200).send(`<!DOCTYPE html>
-<html>
-<head>
-<title>${path}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="go-import" content="git.subiz.net${path} git https://source.developers.google.com/p/subiz-version-4/r${path}">
-<meta http-equiv="refresh" content="0"; url="https://console.cloud.google.com/code/develop/browse${path}/master?project=subiz-version-4"/>
-</head>
-<body>
-Nothing to see here; <a href="https://console.cloud.google.com/code/develop/browse${path}/master?project=subiz-version-4">move along</a>.
-</body>
-</html>`)
+		let html = handleGoGet(path)
+		res.status(200).send(html)
 		return
 	} else if (path.endsWith("/info/refs")) {
 		res.writeHead(302, {
-			'Location': `https://source.developers.google.com/p/subiz-version-4/r${url_parts.path}`
+			'Location': handleGit(path),
 		})
 		res.end()
 		return
