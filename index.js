@@ -1,6 +1,35 @@
 var url = require('url');
 
-exports.git = (req, res) => {
+let repo_map = {
+	"idgen": name => `https://source.developers.google.com/p/subiz-version-4/r/${name}`,
+	"git-subiz-net": name => `https://source.developers.google.com/p/subiz-version-4/r/${name}`,
+	"account": name => `https://bitbucket.org/subiz/${name}.git`,
+}
+module.exports = {
+	removePrefixSlash,
+	getRepoUrl,
+	git,
+}
+
+function removePrefixSlash(str) {
+	let out = str.trim()
+	if (out.startsWith("/")) {
+		out = out.substring(1)
+		return removePrefixSlash(out)
+	}
+	return out
+}
+
+function getRepoUrl(name) {
+	name = removePrefixSlash(name)
+	let path = repo_map[name]
+	if (!path) {
+		return `https://source.developers.google.com/p/subiz-version-4/r/${name}`
+	}
+	return path(name)
+}
+
+function git(req, res) {
 	let url_parts = url.parse(req.url, true);
 	let query = url_parts.query;
 	let path = url_parts.pathname
