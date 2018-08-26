@@ -34,7 +34,8 @@ function getRepoUrl(name) {
 }
 
 function handleGoGet(name) {
-	let path = getRepoUrl(name)
+	let firstname = removePrefixSlash(name).split("/")[0]
+	let path = getRepoUrl(firstname)
 	return `<!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +45,7 @@ function handleGoGet(name) {
 <meta http-equiv="refresh" content="0"; url="https://console.cloud.google.com/code/develop/browse${path}/master?project=subiz-version-4"/>
 </head>
 <body>
-Nothing to see here; <a href="https://console.cloud.google.com/code/develop/browse${path}/master?project=subiz-version-4">move along</a>.
+Nothing to see here; <a href="https://console.cloud.google.com/code/develop/browse${name}/master?project=subiz-version-4">move along</a>.
 </body>
 </html>`
 }
