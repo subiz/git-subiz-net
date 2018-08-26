@@ -40,13 +40,13 @@ function handleGoGet(name) {
 	return `<!DOCTYPE html>
 <html>
 <head>
-<title>git.subiz.net (0.1.3) ${firstname} ${name}  ${path}</title>
+<title>git.subiz.net (0.1.4) ${firstname} ${name} ${path}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="go-import" content="git.subiz.net/${firstname} git ${path}">
-<meta http-equiv="refresh" content="0"; url="https://console.cloud.google.com/code/develop/browse${path}/master?project=subiz-version-4"/>
+<meta http-equiv="refresh" content="0"; url="https://console.cloud.google.com/code/develop/browse/${firstname}/master?project=subiz-version-4"/>
 </head>
 <body>
-Nothing to see here; <a href="https://console.cloud.google.com/code/develop/browse${name}/master?project=subiz-version-4">move along</a>.
+Nothing to see here; <a href="https://console.cloud.google.com/code/develop/browse/${firstname}/master?project=subiz-version-4">move along</a>.
 </body>
 </html>`
 }

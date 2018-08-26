@@ -15,7 +15,7 @@ test('handle go-get', () => {
 	expect(index.handleGoGet("account")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/account git https:\/\/bitbucket.org\/subiz\/account\.git\">/)
 	expect(index.handleGoGet("idgen")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/idgen git https:\/\/source\.developers\.google\.com\/p\/subiz-version-4\/r\/idgen\">/)
 	expect(index.handleGoGet("payment")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/payment git https:\/\/gitlab.com\/subiz\/payment\.git\">/)
-	expect(index.handleGoGet("goutils/conv")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/goutils\/conv git https:\/\/gitlab.com\/subiz\/goutils\.git\">/)
+	expect(index.handleGoGet("goutils/conv")).toMatch(/<meta name=\"go-import\" content=\"git\.subiz\.net\/goutils git https:\/\/gitlab.com\/subiz\/goutils\.git\">/)
 })
 
 test('handle git', () => {
