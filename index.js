@@ -14,6 +14,8 @@ module.exports = {
 }
 
 function removePrefixSlash(str) {
+	if (!str) return ""
+
 	let out = str.trim()
 	if (out.startsWith("/")) {
 		out = out.substring(1)
@@ -47,7 +49,10 @@ Nothing to see here; <a href="https://console.cloud.google.com/code/develop/brow
 </html>`
 }
 
-function handleGit(name) { return getRepoUrl(name) }
+function handleGit(path, search) {
+	let name = removePrefixSlash(path).split("/")[0]
+	return `${getRepoUrl(name)}/info/refs${search}`
+}
 
 function git(req, res) {
 	let url_parts = url.parse(req.url, true);
@@ -71,7 +76,7 @@ function git(req, res) {
 		return
 	} else if (path.endsWith("/info/refs")) {
 		res.writeHead(302, {
-			'Location': handleGit(path),
+			'Location': handleGit(path, url_parts.search),
 		})
 		res.end()
 		return
