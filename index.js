@@ -1,7 +1,20 @@
 var url = require('url');
 
+let github = name => `https://github.com/subiz/{name}.git`
+let bbk = name => `https://bitbucket.org/subiz/${name}.git`
 let repo_map = {
-	"account": name => `https://bitbucket.org/subiz/${name}.git`,
+	"configmap": github,
+	"account":bbk,
+	"api": bbk,
+	"conversation":bbk,
+	"user": bbk,
+	"webhook": bbk,
+	"ws": bbk,
+	"fabikon": bbk,
+	"mailkon": bbk,
+	"kv": bbk,
+	"pubsub": bbk,
+	"auth": bbk,
 }
 
 module.exports = {
