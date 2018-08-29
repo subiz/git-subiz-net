@@ -1,6 +1,6 @@
 var url = require('url');
 
-let github = name => `https://github.com/subiz/{name}.git`
+let github = name => `https://github.com/subiz/${name}.git`
 let bbk = name => `https://bitbucket.org/subiz/${name}.git`
 let repo_map = {
 	"configmap": github,
@@ -52,7 +52,7 @@ function handleGoGet(name) {
 	return `<!DOCTYPE html>
 <html>
 <head>
-<title>git.subiz.net (0.1.5) ${firstname} ${name} ${path}</title>
+<title>git.subiz.net (0.1.6) ${firstname} ${name} ${path}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="go-import" content="git.subiz.net/${firstname} git ${path}">
 <meta http-equiv="refresh" content="0"; url="${path}"/>
