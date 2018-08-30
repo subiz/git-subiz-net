@@ -2,7 +2,9 @@ var url = require('url');
 
 let github = name => `https://github.com/subiz/${name}.git`
 let bbk = name => `https://bitbucket.org/subiz/${name}.git`
+
 let repo_map = {
+	"cloudbuild-trigger": github,
 	"configmap": github,
 	"account":bbk,
 	"api": bbk,
