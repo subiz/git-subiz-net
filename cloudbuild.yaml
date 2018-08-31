@@ -4,10 +4,8 @@ substitutions:
 steps:
 - name: gcr.io/cloud-builders/gcloud
   args:
-    gcloud beta functions deploy helloworld --runtime python37
-    gcloud functions deploy
-  - 'beta',
-  - 'functions',
-  - 'deploy','${_NAME}',
-  - '--source=https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/',
+  - functions
+  - deploy
+  - ${_NAME}
+  - '--source=https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/'
   - "--trigger-http"
