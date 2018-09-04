@@ -105,17 +105,15 @@ async function git(req, res) {
 		res.status(200).send(commit)
 		return
 	}
-	res.writeHead(301, {
-		'Location': `https://gitlab.com/subiz`
-	})
+	res.writeHead(301, {'Location': `https://gitlab.com/subiz`})
 	res.end()
-};
+}
 
 async function getCommitFromMaster(name, gitlabtoken) {
 	name = removePrefixSlash(name)
 	let firstname = name.split("/")[0]
 	let path = getRepoUrl(firstname)
-	console.log("GOTNAME", name, "FIST", firstname, "PATH", path)
+	firstname = "subiz/" + firstname
 
 	if (path.startsWith("https://github.com")) {
 		return getGithubCommit(firstname, "master")
@@ -132,7 +130,6 @@ async function getGithubCommit(repo, branch) {
 		let out = await request.get({
 			url: `https://api.github.com/repos/${repo}/branches/${branch}`,
 			headers: {'User-Agent': "subiz-request"},
-
 		})
 		out = JSON.parse(out)
 		return [out.commit.sha, undefined]
@@ -151,8 +148,7 @@ async function getGitlabCommit(token, repo, branch) {
 				'User-Agent': 'subiz-request',
 				'Private-Token': token,
 			},
-
-		})//.auth('username', 'password', false)
+		})
 		out = JSON.parse(out)
 		return [out.commit.id, undefined]
 	} catch(e) {
