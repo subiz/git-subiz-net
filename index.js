@@ -74,7 +74,7 @@ function handleGit(path, search) {
 	return `${getRepoUrl(name)}/info/refs${search}`
 }
 
-function git(req, res) {
+async function git(req, res) {
 	let url_parts = url.parse(req.url, true);
 	let query = url_parts.query;
 	let path = url_parts.pathname
@@ -96,7 +96,7 @@ function git(req, res) {
 		res.end()
 		return
 	} else if (path.endsWith("/branches/master")) {
-		let [commit, err] = getCommitFromMaster(path, g_gitlabtoken)
+		let [commit, err] = await getCommitFromMaster(path, g_gitlabtoken)
 		if (err) {
 			res.status(400).send(err)
 			return
