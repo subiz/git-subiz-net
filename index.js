@@ -96,7 +96,7 @@ function git(req, res) {
 		res.end()
 		return
 	} else if (path.endsWith("/branches/master")) {
-		let [commit, err] = getcommitFromMaster(path, g_gitlabtoken)
+		let [commit, err] = getCommitFromMaster(path, g_gitlabtoken)
 		if (err) {
 			res.status(400).send(err)
 			return
@@ -118,9 +118,9 @@ async function getCommitFromMaster(name, gitlabtoken) {
 	console.log("GOTNAME", name, "FIST", firstname, "PATH", path)
 
 	if (path.startsWith("https://github.com")) {
-		return getGithubCommit(name, "master")
+		return getGithubCommit(firstname, "master")
 	} else if (path.startsWith("https://gitlab.com")) {
-		return getGitlabCommit(gitlabtoken, name, "master")
+		return getGitlabCommit(gitlabtoken, firstname, "master")
 	} else if (path.startsWith("https://bitbucket")) {
 		return ["", "doesn't support bitbucket"]
 	}
