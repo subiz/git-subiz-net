@@ -22,6 +22,7 @@ let repo_map = {
 	"kv": bbk,
 	"pubsub": bbk,
 	"auth": bbk,
+	"tokenhelper": github,
 }
 
 module.exports = {
