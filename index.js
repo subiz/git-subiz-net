@@ -23,6 +23,7 @@ let repo_map = {
 	"pubsub": bbk,
 	"auth": bbk,
 	"tokenhelper": github,
+	"executor": github,
 }
 
 module.exports = {
