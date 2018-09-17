@@ -24,6 +24,7 @@ let repo_map = {
 	"auth": bbk,
 	"tokenhelper": github,
 	"executor": github,
+	"vue-modal": github,
 }
 
 module.exports = {
