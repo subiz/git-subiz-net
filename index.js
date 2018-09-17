@@ -25,6 +25,7 @@ let repo_map = {
 	"tokenhelper": github,
 	"executor": github,
 	"vue-modal": github,
+	"sync-modal": github,
 }
 
 module.exports = {
