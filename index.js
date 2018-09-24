@@ -26,6 +26,7 @@ let repo_map = {
 	"executor": github,
 	"vue-modal": github,
 	"sync-modal": github,
+	"kafpc": github,
 }
 
 module.exports = {
