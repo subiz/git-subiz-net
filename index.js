@@ -8,6 +8,7 @@ let bbk = name => `https://bitbucket.org/subiz/${name}.git`
 let repo_map = {
 	"ajax": github,
 	"git-subiz-net": github,
+	"goutils": github,
 	"builder-docker": github,
 	"cloudbuild-trigger": github,
 	"configmap": github,
@@ -24,6 +25,7 @@ let repo_map = {
 	"auth": bbk,
 	"tokenhelper": github,
 	"executor": github,
+	"errors": github,
 	"vue-modal": github,
 	"sync-modal": github,
 	"kafpc": github,
