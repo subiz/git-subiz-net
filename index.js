@@ -1,34 +1,35 @@
 var url = require('url')
-var request = require('request-promise');
+var request = require('request-promise')
 
 let g_gitlabtoken = process.env.GITLAB_TOKEN
 let github = name => `https://github.com/subiz/${name}.git`
 let bbk = name => `https://bitbucket.org/subiz/${name}.git`
 
 let repo_map = {
-	"ajax": github,
-	"git-subiz-net": github,
-	"goutils": github,
-	"builder-docker": github,
-	"cloudbuild-trigger": github,
-	"configmap": github,
-	"account":bbk,
-	"api": bbk,
-	"conversation":bbk,
-	"user": bbk,
-	"webhook": bbk,
-	"ws": bbk,
-	"fabikon": bbk,
-	"mailkon": bbk,
-	"kv": bbk,
-	"pubsub": bbk,
-	"auth": bbk,
-	"tokenhelper": github,
-	"executor": github,
-	"errors": github,
-	"vue-modal": github,
-	"sync-modal": github,
-	"kafpc": github,
+	ajax: github,
+	account: bbk,
+	api: bbk,
+	auth: bbk,
+	configmap: github,
+	conversation: bbk,
+	executor: github,
+	errors: github,
+	kafpc: github,
+	kv: bbk,
+	mailkon: bbk,
+	fabikon: bbk,
+	'git-subiz-net': github,
+	goutils: github,
+	'builder-docker': github,
+	'cloudbuild-trigger': github,
+	pubsub: bbk,
+	tokenhelper: github,
+	'sync-modal': github,
+	user: bbk,
+	'vue-modal': github,
+	perm: github,
+	webhook: bbk,
+	ws: bbk,
 }
 
 module.exports = {
@@ -41,18 +42,18 @@ module.exports = {
 	getGitlabCommit,
 }
 
-function removePrefixSlash(str) {
-	if (!str) return ""
+function removePrefixSlash (str) {
+	if (!str) return ''
 
 	let out = str.trim()
-	if (out.startsWith("/")) {
+	if (out.startsWith('/')) {
 		out = out.substring(1)
 		return removePrefixSlash(out)
 	}
 	return out
 }
 
-function getRepoUrl(name) {
+function getRepoUrl (name) {
 	name = removePrefixSlash(name)
 	let path = repo_map[name]
 	if (!path) {
@@ -61,9 +62,9 @@ function getRepoUrl(name) {
 	return path(name)
 }
 
-function handleGoGet(name) {
+function handleGoGet (name) {
 	name = removePrefixSlash(name)
-	let firstname = name.split("/")[0]
+	let firstname = name.split('/')[0]
 	let path = getRepoUrl(firstname)
 	return `<!DOCTYPE html><html>
 <head>
@@ -76,33 +77,33 @@ function handleGoGet(name) {
 </html>`
 }
 
-function handleGit(path, search) {
-	let name = removePrefixSlash(path).split("/")[0]
+function handleGit (path, search) {
+	let name = removePrefixSlash(path).split('/')[0]
 	return `${getRepoUrl(name)}/info/refs${search}`
 }
 
-async function git(req, res) {
-	let url_parts = url.parse(req.url, true);
-	let query = url_parts.query;
+async function git (req, res) {
+	let url_parts = url.parse(req.url, true)
+	let query = url_parts.query
 	let path = url_parts.pathname
 
 	if (!path) {
-		res.writeHead(301, {'Location': 'https://gitlab.com/subiz'});
+		res.writeHead(301, { Location: 'https://gitlab.com/subiz' })
 		res.end()
-		return;
+		return
 	}
 	// for go get
-	if (req.method == "GET" && query['go-get'] == '1') {
+	if (req.method == 'GET' && query['go-get'] == '1') {
 		let html = handleGoGet(path)
 		res.status(200).send(html)
 		return
-	} else if (path.endsWith("/info/refs")) {
+	} else if (path.endsWith('/info/refs')) {
 		res.writeHead(302, {
-			'Location': handleGit(path, url_parts.search),
+			Location: handleGit(path, url_parts.search),
 		})
 		res.end()
 		return
-	} else if (path.endsWith("/branches/master")) {
+	} else if (path.endsWith('/branches/master')) {
 		let [commit, err] = await getCommitFromMaster(path, g_gitlabtoken)
 		if (err) {
 			res.status(400).send(err)
@@ -112,43 +113,42 @@ async function git(req, res) {
 		res.status(200).send(commit)
 		return
 	}
-	res.writeHead(301, {'Location': `https://gitlab.com/subiz`})
+	res.writeHead(301, { Location: `https://gitlab.com/subiz` })
 	res.end()
 }
 
-async function getCommitFromMaster(name, gitlabtoken) {
+async function getCommitFromMaster (name, gitlabtoken) {
 	name = removePrefixSlash(name)
-	let firstname = name.split("/")[0]
+	let firstname = name.split('/')[0]
 	let path = getRepoUrl(firstname)
-	firstname = "subiz/" + firstname
+	firstname = 'subiz/' + firstname
 
-	if (path.startsWith("https://github.com")) {
-		return getGithubCommit(firstname, "master")
-	} else if (path.startsWith("https://gitlab.com")) {
-		return getGitlabCommit(gitlabtoken, firstname, "master")
-	} else if (path.startsWith("https://bitbucket")) {
-		return ["", "doesn't support bitbucket"]
+	if (path.startsWith('https://github.com')) {
+		return getGithubCommit(firstname, 'master')
+	} else if (path.startsWith('https://gitlab.com')) {
+		return getGitlabCommit(gitlabtoken, firstname, 'master')
+	} else if (path.startsWith('https://bitbucket')) {
+		return ['', "doesn't support bitbucket"]
 	}
-	return ["", "unknown 3rd api"]
+	return ['', 'unknown 3rd api']
 }
 
-async function getGithubCommit(repo, branch) {
+async function getGithubCommit (repo, branch) {
 	try {
 		let out = await request.get({
 			url: `https://api.github.com/repos/${repo}/branches/${branch}`,
-			headers: {'User-Agent': "subiz-request"},
+			headers: { 'User-Agent': 'subiz-request' },
 		})
 		out = JSON.parse(out)
 		return [out.commit.sha, undefined]
-	} catch(e) {
+	} catch (e) {
 		return [undefined, e]
 	}
 }
 
-async function getGitlabCommit(token, repo, branch) {
+async function getGitlabCommit (token, repo, branch) {
 	try {
 		repo = encodeURIComponent(repo)
-		console.log(repo)
 		let out = await request.get({
 			url: `https://gitlab.com/api/v4/projects/${repo}/repository/branches/${branch}`,
 			headers: {
@@ -158,7 +158,7 @@ async function getGitlabCommit(token, repo, branch) {
 		})
 		out = JSON.parse(out)
 		return [out.commit.id, undefined]
-	} catch(e) {
+	} catch (e) {
 		return [undefined, e]
 	}
 }
