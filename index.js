@@ -31,6 +31,7 @@ let repo_map = {
 	perm: github,
 	webhook: bbk,
 	ws: bbk,
+	wsclient: github,
 }
 
 module.exports = {
