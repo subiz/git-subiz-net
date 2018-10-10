@@ -34,6 +34,7 @@ let repo_map = {
 	webhook: bbk,
 	ws: bbk,
 	wsclient: github,
+	wkhtmltopdf: github,
 }
 
 module.exports = {
