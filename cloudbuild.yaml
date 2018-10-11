@@ -3,9 +3,5 @@ substitutions:
 
 steps:
 - name: gcr.io/cloud-builders/gcloud
-  args:
-  - functions
-  - deploy
-  - ${_NAME}
-  - '--source=https://source.developers.google.com/projects/${PROJECT_ID}/repos/${REPO_NAME}/moveable-aliases/master/paths/'
-  - "--trigger-http"
+  entrypoint: sh
+  args: ["-c", "gcloud functions deploy git --project subiz-version-4 --entry-point git --runtime nodejs8 --trigger-http"]
