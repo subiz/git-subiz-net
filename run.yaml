@@ -1,0 +1,5 @@
+version: 1
+steps:
+- image: gcr.io/cloud-builders/gcloud
+  command: |
+    gcloud functions deploy git --entry-point git --runtime nodejs8 --trigger-http
