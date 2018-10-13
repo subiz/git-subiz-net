@@ -84,6 +84,7 @@ function handleGoGet (name) {
 
 function handleGit (path, search) {
 	let name = removePrefixSlash(path).split('/')[0]
+	console.log("PATH", path, search, name, gitRepoUrl(name))
 	return `${getRepoUrl(name)}/info/refs${search}`
 }
 
