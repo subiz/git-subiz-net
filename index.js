@@ -89,6 +89,8 @@ function handleGit (path, search) {
 }
 
 async function git (req, res) {
+	res.send('hello')
+	return
 	let url_parts = url.parse(req.url, true)
 	let query = url_parts.query
 	let path = url_parts.pathname
