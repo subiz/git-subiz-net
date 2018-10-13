@@ -20,7 +20,6 @@ let repo_map = {
 	header: github,
 	kv: bbk,
 	mailkon: bbk,
-	fabikon: bbk,
 	'git-subiz-net': github,
 	goutils: github,
 	'builder-docker': github,
@@ -36,6 +35,7 @@ let repo_map = {
 	wsclient: github,
 	wkhtmltopdf: github,
 	content: bbk,
+	devconfig: gitlab,
 }
 
 module.exports = {
