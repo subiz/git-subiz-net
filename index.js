@@ -35,7 +35,6 @@ let repo_map = {
 	wsclient: github,
 	wkhtmltopdf: github,
 	content: bbk,
-	devconfig: gitlab,
 }
 
 module.exports = {
