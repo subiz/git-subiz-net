@@ -84,7 +84,6 @@ function handleGoGet (name) {
 
 function handleGit (path, search) {
 	let name = removePrefixSlash(path).split('/')[0]
-	console.log("PATH", path, search, name, gitRepoUrl(name))
 	return `${getRepoUrl(name)}/info/refs${search}`
 }
 
@@ -98,22 +97,18 @@ async function git (req, res) {
 		res.end()
 		return
 	}
-	console.log('got request')
 	// for go get
 	if (req.method == 'GET' && query['go-get'] == '1') {
-		console.log('2')
 		let html = handleGoGet(path)
 		res.status(200).send(html)
 		return
 	} else if (path.endsWith('/info/refs')) {
-		console.log('1')
 		res.writeHead(302, {
 			Location: handleGit(path, url_parts.search),
 		})
 		res.end()
 		return
 	} else if (path.endsWith('/branches/master')) {
-		console.log('3')
 		let [commit, err] = await getCommitFromMaster(path, g_gitlabtoken)
 		if (err) {
 			res.status(400).send(err)
