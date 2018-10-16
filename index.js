@@ -3,35 +3,24 @@ var request = require('request-promise')
 
 let g_gitlabtoken = process.env.GITLAB_TOKEN
 let github = name => `https://github.com/subiz/${name}.git`
-let bbk = name => `https://bitbucket.org/subiz/${name}.git`
 
 let repo_map = {
 	ajax: github,
-	account: bbk,
-	api: bbk,
-	auth: bbk,
 	configmap: github,
-	conversation: bbk,
 	cassandra: github,
 	executor: github,
 	errors: github,
 	kafpc: github,
 	kafka: github,
 	header: github,
-	kv: bbk,
-	mailkon: bbk,
 	'git-subiz-net': github,
 	goutils: github,
 	'builder-docker': github,
 	'cloudbuild-trigger': github,
-	pubsub: bbk,
 	tokenhelper: github,
 	'sync-modal': github,
-	user: bbk,
 	'vue-modal': github,
 	perm: github,
-	webhook: bbk,
-	ws: bbk,
 	wsclient: github,
 	wkhtmltopdf: github,
 }
