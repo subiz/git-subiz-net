@@ -23,6 +23,9 @@ let repo_map = {
 	perm: github,
 	wsclient: github,
 	wkhtmltopdf: github,
+	idgen: github,
+	type: github,
+	squasher: github,
 }
 
 module.exports = {
