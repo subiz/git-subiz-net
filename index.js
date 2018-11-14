@@ -4,6 +4,7 @@ var request = require('request-promise')
 let g_gitlabtoken = process.env.GITLAB_TOKEN
 let github = name => `https://github.com/subiz/${name}.git`
 
+// map repository name to host
 let repo_map = {
 	ajax: github,
 	configmap: github,
@@ -26,10 +27,13 @@ let repo_map = {
 	idgen: github,
 	type: github,
 	squasher: github,
+	fcm: github,
+	smq: github,
+	lang: github,
 }
 
 module.exports = {
-	removePrefixSlash,
+	removeLeadingSlashes,
 	getRepoUrl,
 	git,
 	handleGoGet,
@@ -38,28 +42,24 @@ module.exports = {
 	getGitlabCommit,
 }
 
-function removePrefixSlash (str) {
+// return a string without leading slashes
+function removeLeadingSlashes (str) {
 	if (!str) return ''
-
 	let out = str.trim()
-	if (out.startsWith('/')) {
-		out = out.substring(1)
-		return removePrefixSlash(out)
-	}
+	while (out.startsWith('/')) out = out.substring(1)
 	return out
 }
 
+// lookup hosting URL of a repo by its name in repo map
+// unknown name will go to gitlab.com
 function getRepoUrl (name) {
-	name = removePrefixSlash(name)
+	name = removeLeadingSlashes(name)
 	let path = repo_map[name]
-	if (!path) {
-		return `https://gitlab.com/subiz/${name}.git`
-	}
-	return path(name)
+	return path ? path(name) : `https://gitlab.com/subiz/${name}.git`
 }
 
 function handleGoGet (name) {
-	name = removePrefixSlash(name)
+	name = removeLeadingSlashes(name)
 	let firstname = name.split('/')[0]
 	let path = getRepoUrl(firstname)
 	return `<!DOCTYPE html><html>
@@ -74,47 +74,43 @@ function handleGoGet (name) {
 }
 
 function handleGit (path, search) {
-	let name = removePrefixSlash(path).split('/')[0]
+	let name = removeLeadingSlashes(path).split('/')[0]
 	return `${getRepoUrl(name)}/info/refs${search}`
 }
 
-async function git (req, res) {
-	let url_parts = url.parse(req.url, true)
-	let query = url_parts.query
-	let path = url_parts.pathname
+async function handle (method, uri) {
+	let urlParts = url.parse(uri, true)
+	let query = urlParts.query
+	let path = urlParts.pathname
+	console.log({path})
+	if (!path) return [301, { Location: 'https://gitlab.com/subiz' }, null]
 
-	if (!path) {
-		res.writeHead(301, { Location: 'https://gitlab.com/subiz' })
-		res.end()
-		return
-	}
+	if (path === 'ping') return [200, null, 'gittt!!']
+
 	// for go get
-	if (req.method == 'GET' && query['go-get'] == '1') {
+	if (method === 'GET' && query['go-get'] == '1') {
 		let html = handleGoGet(path)
-		res.status(200).send(html)
-		return
+		return [200, undefined, html]
 	} else if (path.endsWith('/info/refs')) {
-		res.writeHead(302, {
-			Location: handleGit(path, url_parts.search),
-		})
-		res.end()
-		return
+		return [302, { Location: handleGit(path, urlParts.search) }, null]
 	} else if (path.endsWith('/branches/master')) {
 		let [commit, err] = await getCommitFromMaster(path, g_gitlabtoken)
-		if (err) {
-			res.status(400).send(err)
-			return
-		}
-
-		res.status(200).send(commit)
-		return
+		if (err) return [400, null, err]
+		return [200, null, commit]
 	}
-	res.writeHead(301, { Location: `https://gitlab.com/subiz` })
-	res.end()
+	return [301, { Location: `https://gitlab.com/subiz` }, null]
+}
+
+async function git (req, res) {
+	const VERSION = 1.235
+	let [code, head, body] = await handle(req.method, req.url)
+	head = Object.assign({ 'X-VERSION': VERSION }, head)
+	res.writeHead(code, head)
+	res.end(body)
 }
 
 async function getCommitFromMaster (name, gitlabtoken) {
-	name = removePrefixSlash(name)
+	name = removeLeadingSlashes(name)
 	let firstname = name.split('/')[0]
 	let path = getRepoUrl(firstname)
 	firstname = 'subiz/' + firstname
