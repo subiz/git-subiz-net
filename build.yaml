@@ -1,5 +1,0 @@
-version: 1
-steps:
-- image: gcr.io/cloud-builders/gcloud
-  command: |
-    gcloud functions deploy git --project subiz-version-4 --entry-point git --runtime nodejs8 --trigger-http

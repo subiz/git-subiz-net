@@ -82,10 +82,9 @@ async function handle (method, uri) {
 	let urlParts = url.parse(uri, true)
 	let query = urlParts.query
 	let path = urlParts.pathname
-	console.log({path})
 	if (!path) return [301, { Location: 'https://gitlab.com/subiz' }, null]
 
-	if (path === 'ping') return [200, null, 'gittt!!']
+	if (path === '/ping') return [200, null, 'gittt!!']
 
 	// for go get
 	if (method === 'GET' && query['go-get'] == '1') {
@@ -102,7 +101,7 @@ async function handle (method, uri) {
 }
 
 async function git (req, res) {
-	const VERSION = 1.235
+	const VERSION = 1.236
 	let [code, head, body] = await handle(req.method, req.url)
 	head = Object.assign({ 'X-VERSION': VERSION }, head)
 	res.writeHead(code, head)
