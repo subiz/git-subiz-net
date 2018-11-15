@@ -8,6 +8,7 @@ let github = name => `https://github.com/subiz/${name}.git`
 let repo_map = {
 	'ajax': github,
 	'builder-docker': github,
+	'buildtrigger': github,
 	'cassandra': github,
 	'cloudbuild-trigger': github,
 	'configmap': github,
