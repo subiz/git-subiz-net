@@ -16,6 +16,7 @@ let repo_map = {
 	'errors': github,
 	'fsm': github,
 	'git-subiz-net': github,
+	'goredis': github,
 	'goutils': github,
 	'header': github,
 	'idgen': github,
