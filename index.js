@@ -87,7 +87,7 @@ async function handle (method, uri) {
 	let path = urlParts.pathname
 	if (!path) return [301, { Location: 'https://gitlab.com/subiz' }, null]
 
-	if (path === '/ping') return [200, null, 'gittt!!']
+	if (path === '/ping') return [200, null, 'gittteie!!']
 
 	// for go get
 	if (method === 'GET' && query['go-get'] == '1') {
