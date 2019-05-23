@@ -22,7 +22,6 @@ let repo_map = {
 	'idgen': github,
 	'kafpc': github,
 	'kafka': github,
-	'lang': github,
 	'vue-modal': github,
 	'perm': github,
 	'smq': github,
